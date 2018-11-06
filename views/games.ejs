@@ -1,0 +1,84 @@
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Games</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <div id="xx" style="color:red">Games</div>
+        <a href="/">home</a>
+        <% if(games !== null) { var nr = 99; %>
+        <div class="rTable">
+            <div class="rTableRow">
+                <div class="rTableCell"><strong>Number</strong></div>
+                <div class="rTableCell"><strong>Home / Away</strong></div>
+                <div class="rTableCell"><strong>Oval</strong></div>
+                <div class="rTableCell"><strong>Current Game</strong></div>
+                <div class="rTableCell"><strong>MotM</strong></div>
+                <div class="rTableCell"><strong>btn</strong></div>
+            </div>
+            <% games.forEach(function(game){ %>
+            <div class="rTableRow">
+                <form id="bodyr" action="/games" method="post">
+                    <div class="rTableCell"><input type="text" id="Number" name="Number" value="<%= game.Number %>"></div>
+                    <div class="rTableCell">
+                        <select name="Home" id="Home">
+                            <%
+                                var options = [ "Yes", "No" ];
+                                for ( var i = 0; i < options.length; i++ )
+                                {
+                                  var selected = ( game.Home == options[ i ] ) ? "selected" : "";
+                                  %>
+                            <option value="<%=options[ i ] %>" <%=selected %>><%=options[ i ] %></option>
+                            <%
+                                }
+                                %>
+                        </select>
+                    </div>
+                    <div class="rTableCell">
+                        <select name="CurrentGame" id="CurrentGame">
+                            <%
+                                var options = [ "Yes", "No" ];
+                                for ( var i = 0; i < options.length; i++ )
+                                {
+                                  var CurrentGameselected = ( game.CurrentGame == options[ i ] ) ? "selected" : "";
+                                  if (game.CurrentGame != options[ i ])
+                                  nr = game.Number;
+                                  %>
+                            <option value="<%=options[ i ] %>" <%=CurrentGameselected %>><%=options[ i ] %></option>
+                            <%
+                                }
+                                %>
+                        </select>
+                    </div>
+                    <% 
+                        if (CurrentGameselected == "") {
+                          link = "<a href=\"/Man of the Match\">home</a>";
+                        }
+                        %>
+                    <div class="rTableCell"><input type="text" id="Location" name="Location" value="<%= game.Location %>"></div>
+                    <%
+                        if (CurrentGameselected == "") {
+                            link = "<a href=\"/Man of the Match\">home</a>";
+                            %>
+                    <div class="rTableCell"><a href="/game?game=<%= nr %>">Man of the Match</a></div>
+                    <%
+                        } else {
+                          %>
+                    <div class="rTableCell"><a href="/game?game=<%= nr %>">Man of the Match</a></div>
+                    <%
+                        }
+                        %>
+                    <div class="rTableCell"><input type="submit" value="Save"></div>
+                </form>
+            </div>
+            <% }); %>
+        </div>
+        <% } %>
+    </body>
+</html>
+

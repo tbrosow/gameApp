@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Games</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+  </head>
+  <body>
+    <div id="xx" style="color:red">Stats</div>
+    <a href="/">home</a>
+    
+    <script>
+
+      function nextGame() {
+        var e = document.getElementById ("games");
+        var gamenr = e.options [e.selectedIndex] .value;
+        window.location.href = "stats?game="+gamenr;
+      }
+    </script>
+
+<div><%= game.Number %><%= game.Location %></div>
+
+    <% if(players !== null) {
+
+
+          var labels = [];
+          var votes = [];
+          for ( var i = 0; i < players.length; i++ ) {
+            var voteCount = 0;
+
+
+            labels.push(players[i].Firstname + " " + players[i].Lastname);
+            for ( var v = 0; v < vote.length; v++ ) {
+
+              if (game.Number == vote[v].Game) {
+
+                if (vote[v].gold == players[i].Number) {
+                  voteCount+= 3;
+                }
+                if (vote[v].silver == players[i].Number) {
+                  voteCount+= 2;
+                }
+                if (vote[v].bronze == players[i].Number) {
+                  voteCount+= 1;
+                }
+              }
+            }
+            votes.push(voteCount);
+          }
+          
+          var str = JSON.stringify(labels);
+          var str2 = JSON.stringify(votes);
+          var strplayers = JSON.stringify(players);
+
+
+    %> 
+
+    <% } %> 
+
+    
+
+  <div style="background:#fff"><canvas id="myChart" width="400" height="200"></canvas></div>
+  <select name="games" id="games" onchange="nextGame()">
+    <option value="" </option>
+  <% 
+      for ( var i = 0; i < games.length; i++ ) {
+        if (i == 0) {
+            var selected = "";
+          } else {
+             selected = "";
+          }
+          
+          %><option value="<%=games[i].Number %>" <%= selected %> > <%= games[i].Number  + " " + games[i].Location %></option><%
+      }
+  %>
+  </select>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+// Chart.defaults.global.defaultFontFamily = "Lato";
+// Chart.defaults.global.defaultFontSize = 10;
+var s = "" + <%- str %>
+var s2 = "" + <%- str2 %>
+var s3 = "" + <%- strplayers %>
+
+var players = s.split(",");
+
+var votes = s2.split(",");
+
+var myChart = new Chart(ctx, {
+    type: 'horizontalBar',
+    data: {
+        labels: players,
+        
+        datasets: [{
+            label: '# of Votes',
+            data: votes,
+            backgroundColor2: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd", "#8e5ea2","#3cba9f","red"],
+            backgroundColor: [
+    'rgba(0, 99, 132, 0.6)',
+    'rgba(30, 99, 132, 0.6)',
+    'rgba(60, 99, 132, 0.6)',
+    'rgba(90, 99, 132, 0.6)',
+    'rgba(120, 99, 132, 0.6)',
+    'rgba(150, 99, 132, 0.6)',
+    'rgba(180, 99, 132, 0.6)',
+    'rgba(210, 99, 132, 0.6)',
+    'rgba(240, 99, 132, 0.6)',
+    'rgba(0, 170, 132, 0.6)',
+    'rgba(30, 170, 132, 0.6)',
+    'rgba(60, 170, 132, 0.6)',
+    'rgba(90, 170, 132, 0.6)',
+    'rgba(120, 170, 132, 0.6)',
+    'rgba(150, 170, 132, 0.6)',
+    'rgba(180, 170, 132, 0.6)',
+    'rgba(210, 170, 132, 0.6)',
+    'rgba(240, 170, 132, 0.6)'
+  ],
+            borderWidth: 6,
+            hoverBorderWidth: 0
+        }]
+    },
+    options4: {
+        scales: {
+            xAxes2: [{
+              barPercentage: 0.4
+            }],
+            yAxes2: [{
+                barPercentage: 0.5,
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+
+
+</script>
+
+
+  </body>
+</html>

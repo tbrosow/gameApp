@@ -1,0 +1,143 @@
+
+
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <title>Games</title>
+      <link rel="stylesheet" type="text/css" href="/css/style.css">
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+   </head>
+   <body>
+      <script>
+         function notplayed(elem) {
+             
+             var elem = document.getElementById("played");
+             if (elem.value == "played") {
+               var elem = document.getElementById("points");
+               elem.style.display = "";
+             } else {
+               var elem = document.getElementById("points");
+               elem.style.display = "none";
+             }
+         
+           }
+      </script>
+      <div id="" style="color:red">3-2-1</div>
+      <a href="/">home</a>
+      <% 
+         var voter = false;
+         %>
+      <% if(game !== null) { %>
+      <form id="formular" action="/game" method="post">
+         <div><%= game.Number %><%= game.Location %></div>
+         <input type="hidden" id="GameNumber" name="GameNumber" value="<%= game.Number %>">
+         Voter
+         <select name="Voter" id="Voter">
+            <%
+               var options = players;
+               for ( var i = 0; i < players.length; i++ )
+               {
+                 var valid = true;
+                 if (i == 0) {
+                   var selected = "selected";
+                 } else {
+                    selected = "";
+                 }
+                 for ( var idx = 0; idx < vote.length; idx++ ) {
+                 // console.log("PLA"+ vote[idx].Player + " - " + players[i].Number);
+                   if (vote[idx].Player == players[i].Number && vote[idx].Game == game.Number) {
+                       console.log("PLA");
+                       console.log("Game ");
+                       valid = false;
+                   }
+                 }
+                 if (valid) {
+                   voter = true;
+                 %>
+            <option value="<%=players[i].Number %>" <%= selected %> > <%= players[i].Firstname  + " " + players[i].Lastname %></option>
+            <%
+               }
+               }
+               %>
+         </select>
+         <select name="played" id="played" onchange="notplayed()">
+            <option value="played" selected="">Played</option>
+            <option value="notplayed" >Not Played</option>
+         </select>
+         <div id="points">
+            3 Points 
+            <select name="gold" id="gold">
+               <%
+                  var s3 = players.length -1;
+                  var s2 = players.length -2;
+                  var s1 = players.length -3;
+                  
+                  var options = players;
+                  for ( var i = 0; i < players.length; i++ )
+                  {
+                    if (i == 1) {
+                      var selected = "selected";
+                    } else {
+                       selected = "";
+                    }
+                    
+                    %>
+               <option value="<%=players[i].Number %>" <%= selected %> > <%= players[i].Firstname  + " " + players[i].Lastname %></option>
+               <%
+                  }
+                  %>
+            </select>
+            2 Points
+            <select name="silver" id="silver">
+               <%
+                  var options = players;
+                  for ( var i = 0; i < players.length; i++ )
+                  {
+                    if (i == 2) {
+                      var selected = "selected";
+                    }else {
+                       selected = "";
+                    }
+                    
+                    %>
+               <option value="<%=players[i].Number %>" <%=selected %> > <%= players[i].Firstname  + " " + players[i].Lastname %></option>
+               <%
+                  }
+                  %>
+            </select>
+            1 Point
+            <select name="bronze" id="bronze">
+               <%
+                  var options = players;
+                  for ( var i = 0; i < players.length; i++ )
+                  {
+                    if (i == 3) {
+                      var selected = "selected";
+                    }else {
+                       selected = "";
+                    }
+                    
+                    %>
+               <option value="<%=players[i].Number %>" <%=selected %> > <%= players[i].Firstname  + " " + players[i].Lastname %></option>
+               <%
+                  }
+                  %>
+            </select>
+         </div>
+         <div class="rTableCell"><input type="submit" value="Save"></div>
+      </form>
+      <% if(!voter) { %>
+      <p>All voted<a href="/stats?game=<%= game.Number %>">result</a></p>
+      <script>
+         var elem = document.getElementById("formular");
+         elem.style.display = "none";
+         
+         
+      </script>
+      <% } else { %>
+      <% } %>
+      <% } %>
+   </body>
+</html>
+
